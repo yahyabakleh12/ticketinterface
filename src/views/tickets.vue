@@ -1,10 +1,45 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import sampleTickets from '../assets/sampleTickets'
+import { getTickets } from '../api'
 
 const router = useRouter()
-const tickets = ref(sampleTickets)
+const tickets = ref([])
+
+async function fetchTickets() {
+  try {
+    const token = localStorage.getItem('token')
+    if (token) {
+      const res = await getTickets(token)
+      tickets.value = res.data.map((t) => ({
+        token: t.token,
+        number: t.number,
+        code: t.code,
+        city: t.city,
+        cameraId: t.access_point_id,
+        entryTime: t.entry_time,
+        exitTime: t.exit_time,
+        duration: formatDuration(t.entry_time, t.exit_time),
+        image: t.car_pic,
+      }))
+    }
+  } catch (e) {
+    console.error('Failed to load tickets', e)
+  }
+}
+
+function formatDuration(entry, exit) {
+  if (!entry || !exit) return ''
+  const diff = new Date(exit) - new Date(entry)
+  if (Number.isNaN(diff)) return ''
+  const hours = Math.floor(diff / 3600000)
+  const minutes = Math.floor((diff % 3600000) / 60000)
+  return `${hours}h ${minutes}m`
+}
+
+onMounted(() => {
+  fetchTickets()
+})
 
 const filters = ref({
   dateRange: '',
