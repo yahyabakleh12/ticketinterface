@@ -1,15 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../views/Login.vue'
-import Tickets from '../views/Tickets.vue'
+import Login from '../views/login.vue'
+import Tickets from '../views/tickets.vue'
 
 const routes = [
   { path: '/', component: Login },
-  { path: '/tickets', component: Tickets }
+  { path: '/tickets', component: Tickets },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/' && !localStorage.getItem('token')) {
+    next('/')
+  } else {
+    next()
+  }
 })
 
 export default router

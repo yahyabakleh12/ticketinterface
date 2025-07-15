@@ -20,7 +20,7 @@ async function doLogin() {
 </script>
 
 <template>
-  <div>
+  <div class="login">
     <h2>Login</h2>
     <input v-model="username" placeholder="Username" />
     <input v-model="password" type="password" placeholder="Password" />
