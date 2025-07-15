@@ -1,0 +1,47 @@
+export default [
+  {
+    token: 'T-1001',
+    number: 'A12345',
+    code: 'P1',
+    city: 'Dubai',
+    cameraId: 'CAM-001',
+    entryTime: '2024-05-01 08:00',
+    exitTime: '2024-05-01 09:30',
+    duration: '1h 30m',
+    entryPath: '/files/entry1.jpg',
+    exitPath: '/files/exit1.jpg',
+    exitVideo: '/files/exit1.mp4',
+    image:
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAAAAACPAi4CAAAAPElEQVR42u3PAQ0AAAgDoJvc0OsHNlEAsmYMkzSJM0mTNIkzSZM0iTNJkzSJkzSJM0mTNIkzSZM0iTNJkzSQ+ppks/o8D/b6bAAAAAElFTkSuQmCC',
+  },
+  {
+    token: 'T-1002',
+    number: 'B98765',
+    code: 'P2',
+    city: 'Abu Dhabi',
+    cameraId: 'CAM-002',
+    entryTime: '2024-05-02 10:15',
+    exitTime: '2024-05-02 11:00',
+    duration: '45m',
+    entryPath: '/files/entry2.jpg',
+    exitPath: '/files/exit2.jpg',
+    exitVideo: '/files/exit2.mp4',
+    image:
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAAAAACPAi4CAAAAPElEQVR42u3PAQ0AAAgDoJvc0OsHNlEAsmYMkzSJM0mTNIkzSZM0iTNJkzSJkzSJM0mTNIkzSZM0iTNJkzSQ+ppks/o8D/b6bAAAAAElFTkSuQmCC',
+  },
+  {
+    token: 'T-1003',
+    number: 'C54321',
+    code: 'P3',
+    city: 'Sharjah',
+    cameraId: 'CAM-003',
+    entryTime: '2024-05-03 07:45',
+    exitTime: '2024-05-03 08:30',
+    duration: '45m',
+    entryPath: '/files/entry3.jpg',
+    exitPath: '/files/exit3.jpg',
+    exitVideo: '/files/exit3.mp4',
+    image:
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAAAAACPAi4CAAAAPElEQVR42u3PAQ0AAAgDoJvc0OsHNlEAsmYMkzSJM0mTNIkzSZM0iTNJkzSJkzSJM0mTNIkzSZM0iTNJkzSQ+ppks/o8D/b6bAAAAAElFTkSuQmCC',
+  },
+]
