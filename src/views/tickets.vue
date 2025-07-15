@@ -29,11 +29,26 @@ function logout() {
     </aside>
     <main class="content">
       <h2>Tickets</h2>
-      <ul>
-        <li v-for="ticket in tickets" :key="ticket.id">
-          {{ ticket.number }} - {{ ticket.city }} - {{ ticket.status }}
-        </li>
-      </ul>
+      <table class="ticket-table">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>City</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="ticket in tickets" :key="ticket.id">
+            <td>{{ ticket.number }}</td>
+            <td>{{ ticket.city }}</td>
+            <td>{{ ticket.status }}</td>
+            <td>
+              <RouterLink :to="`/tickets/${ticket.id}`">View</RouterLink>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </main>
   </div>
 </template>

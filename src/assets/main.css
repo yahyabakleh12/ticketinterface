@@ -53,3 +53,15 @@ a,
   flex-direction: column;
   gap: 0.5rem;
 }
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ticket-table th,
+.ticket-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: left;
+}
