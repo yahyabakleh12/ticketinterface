@@ -1,0 +1,126 @@
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 240px;
+  background: #1f2937;
+  color: #fff;
+  padding: 1rem;
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar li {
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.sidebar li.title {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+.sidebar li.logout {
+  margin-top: 1rem;
+}
+.sidebar li.active,
+.sidebar li:hover {
+  background: #374151;
+}
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.bell {
+  position: relative;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.bell .badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #dc3545;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 0.65rem;
+}
+.user {
+  cursor: pointer;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+.filters input {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.data-table th,
+.data-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+.data-table tr:hover {
+  background: #f3f4f6;
+}
+.data-table img {
+  width: 40px;
+  height: 24px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  color: #fff;
+  border: none;
+  font-size: 0.75rem;
+  margin-right: 0.25rem;
+}
+.primary {
+  background: #0d6efd;
+}
+.view {
+  background: #ffc107;
+}
+.edit {
+  background: #fd7e14;
+}
+.delete {
+  background: #dc3545;
+}
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+  }
+}
