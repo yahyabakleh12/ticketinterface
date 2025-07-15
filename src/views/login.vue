@@ -12,7 +12,7 @@ async function doLogin() {
   try {
     const res = await login(username.value, password.value)
     localStorage.setItem('token', res.data.access_token)
-    router.push('/tickets')
+    router.push('/orders')
   } catch (e) {
     error.value = 'Invalid credentials'
   }
