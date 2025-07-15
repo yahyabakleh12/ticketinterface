@@ -58,7 +58,7 @@ function back() {
 </template>
 
 <style scoped>
-@import './tickets.vue';
+@import './tickets.css';
 .detail-card {
   background: #fff;
   padding: 1rem;
