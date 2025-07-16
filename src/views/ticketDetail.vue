@@ -25,7 +25,7 @@ async function fetchTicket() {
         entryTime: t.entry_time,
         exitTime: t.exit_time,
         duration: formatDuration(t.entry_time, t.exit_time),
-        entryPath: t.entry_pic_path,
+        entryPath: t.entry_pic_base64,
         exitPath: t.exit_video_path,
         exitVideo: t.exit_video_path,
         image: t.car_pic,
@@ -59,7 +59,6 @@ onMounted(fetchTicket)
       <NavBar title="Ticket Details" :notifications="1" />
       <div class="detail-card">
         <img :src="`data:image/jpeg;base64,${ticket.image}`" alt="car" class="large-image" />
-        <p><strong>Token:</strong> {{ ticket.token }}</p>
         <p><strong>Number:</strong> {{ ticket.number }}</p>
         <p><strong>Code:</strong> {{ ticket.code }}</p>
         <p><strong>City:</strong> {{ ticket.city }}</p>
@@ -67,9 +66,9 @@ onMounted(fetchTicket)
         <p><strong>Entry Time:</strong> {{ ticket.entryTime }}</p>
         <p><strong>Exit Time:</strong> {{ ticket.exitTime }}</p>
         <p><strong>Duration:</strong> {{ ticket.duration }}</p>
-        <p><strong>Entry File:</strong> {{ ticket.entryPath }}</p>
+        <p><strong>Entry File:</strong>  <img :src="`data:image/jpeg;base64,${ticket.entryPath}`" alt="car" class="large-image" /></p>
         <p><strong>Exit File:</strong> {{ ticket.exitPath }}</p>
-        <video class="video" controls v-if="ticket.exitVideo" :src="ticket.exitVideo"></video>
+        <video class="video" controls v-if="ticket.exitVideo" :src="`${ticket.exitVideo}`"></video>
         <button class="btn primary" @click="back">Back</button>
       </div>
     </div>
