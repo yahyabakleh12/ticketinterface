@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getTicket } from '../api'
+import Sidebar from '../components/Sidebar.vue'
+import NavBar from '../components/NavBar.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -52,31 +54,9 @@ onMounted(fetchTicket)
 
 <template>
   <div class="dashboard" v-if="ticket">
-    <aside class="sidebar">
-      <h2>On Street Parking</h2>
-      <ul>
-        <li>Statistics</li>
-        <li>Tickets</li>
-        <li class="title">On Street Parking</li>
-        <li class="active">Tickets</li>
-        <li>Manual Reviews</li>
-        <li>Users</li>
-        <li>Roles</li>
-        <li>Permissions</li>
-        <li class="logout">Logout</li>
-      </ul>
-    </aside>
+    <Sidebar />
     <div class="main">
-      <header class="header-bar">
-        <h1>Ticket Details</h1>
-        <div class="header-actions">
-          <div class="bell">
-            <span class="icon">🔔</span>
-            <span class="badge">1</span>
-          </div>
-          <div class="user">admin ▾</div>
-        </div>
-      </header>
+      <NavBar title="Ticket Details" :notifications="1" />
       <div class="detail-card">
         <img :src="`data:image/jpeg;base64,${ticket.image}`" alt="car" class="large-image" />
         <p><strong>Token:</strong> {{ ticket.token }}</p>
