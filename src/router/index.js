@@ -6,7 +6,7 @@ import TicketDetail from '../views/ticketDetail.vue'
 const routes = [
   { path: '/', component: Login },
   { path: '/tickets', component: Tickets },
-  { path: '/tickets/:id', component: TicketDetail },
+  { path: '/ticket/:id', component: TicketDetail },
 ]
 
 const router = createRouter({

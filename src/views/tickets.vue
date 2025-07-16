@@ -12,6 +12,7 @@ async function fetchTickets() {
     if (token) {
       const res = await getTickets(token)
       tickets.value = res.data.map((t) => ({
+        id:t.id,
         token: t.token,
         number: t.number,
         code: t.code,
@@ -54,7 +55,7 @@ function addTicket() {
 }
 
 function viewTicket(id) {
-  router.push(`/tickets/${id}`)
+  router.push(`/ticket/${id}`)
 }
 
 function editTicket(id) {
@@ -71,14 +72,8 @@ function deleteTicket(id) {
     <aside class="sidebar">
       <h2>On Street Parking</h2>
       <ul>
-        <li>Statistics</li>
-        <li>Tickets</li>
         <li class="title">On Street Parking</li>
         <li class="active">Tickets</li>
-        <li>Manual Reviews</li>
-        <li>Users</li>
-        <li>Roles</li>
-        <li>Permissions</li>
         <li class="logout">Logout</li>
       </ul>
     </aside>
@@ -117,7 +112,7 @@ function deleteTicket(id) {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="t in tickets" :key="t.token">
+          <tr v-for="t in tickets" :key="t.id">
             <td>{{ t.token }}</td>
             <td>{{ t.number }}</td>
             <td>{{ t.code }}</td>
@@ -126,11 +121,15 @@ function deleteTicket(id) {
             <td>{{ t.entryTime }}</td>
             <td>{{ t.exitTime }}</td>
             <td>{{ t.duration }}</td>
-            <td><img :src="t.image" alt="car" /></td>
+            <td><img
+          :src="`data:image/jpeg;base64,${t.image}`"
+          alt="Car"
+          style="width:40px; height:24px; object-fit:cover; border-radius:4px;"
+        /></td>
             <td>
-              <button class="btn view" @click="viewTicket(t.token)">View</button>
-              <button class="btn edit" @click="editTicket(t.token)">Edit</button>
-              <button class="btn delete" @click="deleteTicket(t.token)">Delete</button>
+              <button class="btn view" @click="viewTicket(t.id)">View</button>
+              <button class="btn edit" @click="editTicket(t.id)">Edit</button>
+              <button class="btn delete" @click="deleteTicket(t.id)">Delete</button>
             </td>
           </tr>
         </tbody>
