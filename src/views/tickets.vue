@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { getTickets } from '../api'
+import Sidebar from '../components/Sidebar.vue'
+import NavBar from '../components/NavBar.vue'
 
 const router = useRouter()
 const tickets = ref([])
@@ -69,26 +71,11 @@ function deleteTicket(id) {
 
 <template>
   <div class="dashboard">
-    <aside class="sidebar">
-      <h2>On Street Parking</h2>
-      <ul>
-        <li class="title">On Street Parking</li>
-        <li class="active">Tickets</li>
-        <li class="logout">Logout</li>
-      </ul>
-    </aside>
+    <Sidebar />
     <div class="main">
-      <header class="header-bar">
-        <h1>Tickets</h1>
-        <div class="header-actions">
-          <button class="btn primary" @click="addTicket">Add New Ticket</button>
-          <div class="bell">
-            <span class="icon">🔔</span>
-            <span class="badge">{{ tickets.length }}</span>
-          </div>
-          <div class="user">admin ▾</div>
-        </div>
-      </header>
+      <NavBar :title="'Tickets'" :notifications="tickets.length">
+        <button class="btn primary" @click="addTicket">Add New Ticket</button>
+      </NavBar>
       <div class="filters">
         <input v-model="filters.dateRange" placeholder="Entry/Exit Range" />
         <input v-model="filters.cameraId" placeholder="Camera ID" />
