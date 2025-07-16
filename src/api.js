@@ -18,7 +18,7 @@ export function getTickets(token) {
 }
 
 export function getTicket(token, id) {
-  return api.get(`/tickets/${id}`, {
+  return api.get(`/ticket/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   })
 }
