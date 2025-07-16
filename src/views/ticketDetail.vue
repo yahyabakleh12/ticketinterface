@@ -1,14 +1,53 @@
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import sampleTickets from '../assets/sampleTickets'
+import { getTicket } from '../api'
 
 const route = useRoute()
 const router = useRouter()
-const ticket = sampleTickets.find((t) => t.token === route.params.id)
+const ticket = ref(null)
+
+async function fetchTicket() {
+  try {
+    const token = localStorage.getItem('token')
+    if (token) {
+      const res = await getTicket(token, route.params.id)
+      const t = res.data
+      ticket.value = {
+        id: t.id,
+        token: t.token,
+        number: t.number,
+        code: t.code,
+        city: t.city,
+        cameraId: t.access_point_id,
+        entryTime: t.entry_time,
+        exitTime: t.exit_time,
+        duration: formatDuration(t.entry_time, t.exit_time),
+        entryPath: t.entry_pic_path,
+        exitPath: t.exit_video_path,
+        exitVideo: t.exit_video_path,
+        image: t.car_pic,
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load ticket', e)
+  }
+}
+
+function formatDuration(entry, exit) {
+  if (!entry || !exit) return ''
+  const diff = new Date(exit) - new Date(entry)
+  if (Number.isNaN(diff)) return ''
+  const hours = Math.floor(diff / 3600000)
+  const minutes = Math.floor((diff % 3600000) / 60000)
+  return `${hours}h ${minutes}m`
+}
 
 function back() {
   router.push('/tickets')
 }
+
+onMounted(fetchTicket)
 </script>
 
 <template>
@@ -39,7 +78,7 @@ function back() {
         </div>
       </header>
       <div class="detail-card">
-        <img :src="ticket.image" alt="car" class="large-image" />
+        <img :src="`data:image/jpeg;base64,${ticket.image}`" alt="car" class="large-image" />
         <p><strong>Token:</strong> {{ ticket.token }}</p>
         <p><strong>Number:</strong> {{ ticket.number }}</p>
         <p><strong>Code:</strong> {{ ticket.code }}</p>
