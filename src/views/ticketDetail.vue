@@ -68,7 +68,7 @@ onMounted(fetchTicket)
         <p><strong>Duration:</strong> {{ ticket.duration }}</p>
         <p><strong>Entry File:</strong>  <img :src="`data:image/jpeg;base64,${ticket.entryPath}`" alt="car" class="large-image" /></p>
         <p><strong>Exit File:</strong> {{ ticket.exitPath }}</p>
-        <video class="video" controls v-if="ticket.exitVideo" :src="`${ticket.exitVideo}`"></video>
+        <video class="video" controls v-if="ticket.exitVideo" :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`"></video>
         <button class="btn primary" @click="back">Back</button>
       </div>
     </div>

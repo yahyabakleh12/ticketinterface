@@ -86,7 +86,6 @@ function deleteTicket(id) {
       <table class="data-table">
         <thead>
           <tr>
-            <th>Token</th>
             <th>Number</th>
             <th>Code</th>
             <th>City</th>
@@ -100,7 +99,6 @@ function deleteTicket(id) {
         </thead>
         <tbody>
           <tr v-for="t in tickets" :key="t.id">
-            <td>{{ t.token }}</td>
             <td>{{ t.number }}</td>
             <td>{{ t.code }}</td>
             <td>{{ t.city }}</td>
