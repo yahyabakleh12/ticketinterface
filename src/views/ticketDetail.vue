@@ -53,42 +53,40 @@ onMounted(fetchTicket)
 </script>
 
 <template>
-  <!-- <div class="container" v-if="ticket">
-    <div class="row">
-      <div class="col-md-2 p-0 ms-auto">
-        <Sidebar />
-      </div>
-      <div class="col-md-10 ms-auto">
-        <NavBar title="Ticket Details" :notifications="1" /> -->
-  <div class="card m-3 p-3">
-    <div class="row">
-      <div class="col-md-4 text-center">
-        <img :src="`data:image/jpeg;base64,${ticket.image}`" alt="car" class="img-fluid rounded mb-3" />
-      </div>
-      <div class="col-md-8">
-        <p><strong>Number:</strong> {{ ticket.number }}</p>
-        <p><strong>Code:</strong> {{ ticket.code }}</p>
-        <p><strong>City:</strong> {{ ticket.city }}</p>
-        <p><strong>Camera ID:</strong> {{ ticket.cameraId }}</p>
-        <p><strong>Entry Time:</strong> {{ ticket.entryTime }}</p>
-        <p><strong>Exit Time:</strong> {{ ticket.exitTime }}</p>
-        <p><strong>Duration:</strong> {{ ticket.duration }}</p>
+  <div class="dashboard" v-if="ticket">
+    <Sidebar />
+    <div class="main">
+      <NavBar title="Ticket Details" :notifications="1" />
+      <div class="card m-3 p-3">
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <img :src="`data:image/jpeg;base64,${ticket.image}`" alt="car" class="img-fluid rounded mb-3"
+              style="height: 100%;" />
+          </div>
+          <div class="col-md-8 bg-dark text-white p-3">
+            <p><strong>Number:</strong> {{ ticket.number }}</p>
+            <p><strong>Code:</strong> {{ ticket.code }}</p>
+            <p><strong>City:</strong> {{ ticket.city }}</p>
+            <p><strong>Camera ID:</strong> {{ ticket.cameraId }}</p>
+            <p><strong>Entry Time:</strong> {{ ticket.entryTime }}</p>
+            <p><strong>Exit Time:</strong> {{ ticket.exitTime }}</p>
+            <p><strong>Duration:</strong> {{ ticket.duration }}</p>
+          </div>
+        </div>
+        <div class="mt-3">
+          <p>
+            <strong>Entry File:</strong>
+            <img :src="`data:image/jpeg;base64,${ticket.entryPath}`" alt="car" class="img-fluid rounded" />
+          </p>
+          <p><strong>Exit File:</strong> {{ ticket.exitPath }}</p>
+          <video class="w-100 mt-2" controls v-if="ticket.exitVideo"
+            :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`"></video>
+        </div>
+        <button class="btn btn-primary mt-3" @click="back">Back</button>
       </div>
     </div>
-    <div class="mt-3">
-      <p>
-        <strong>Entry File:</strong>
-        <img :src="`data:image/jpeg;base64,${ticket.entryPath}`" alt="car" class="img-fluid rounded" />
-      </p>
-      <p><strong>Exit File:</strong> {{ ticket.exitPath }}</p>
-      <video class="w-100 mt-2" controls v-if="ticket.exitVideo"
-        :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`"></video>
-    </div>
-    <button class="btn btn-primary mt-3" @click="back">Back</button>
   </div>
-  <!-- </div>
-    </div>
-  </div> -->
+
 </template>
 
 <style scoped>
