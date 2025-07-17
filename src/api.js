@@ -22,3 +22,13 @@ export function getTicket(token, id) {
     headers: { Authorization: `Bearer ${token}` },
   })
 }
+
+export function submitTicket(token, id) {
+  return api.post(
+    `/submit/${id}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  )
+}

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getTicket } from '../api'
+import { getTicket, submitTicket } from '../api'
 
 import NavBar from '../components/NavBar.vue'
 import Sidebar from '../components/Sidebar.vue'
@@ -49,6 +49,19 @@ function back() {
   router.push('/tickets')
 }
 
+async function submitAndNext() {
+  try {
+    const token = localStorage.getItem('token')
+    if (token && ticket.value) {
+      await submitTicket(token, ticket.value.id)
+      const nextId = Number(route.params.id) + 1
+      router.push(`/ticket/${nextId}`)
+    }
+  } catch (e) {
+    console.error('Failed to submit ticket', e)
+  }
+}
+
 onMounted(fetchTicket)
 </script>
 
@@ -85,6 +98,11 @@ onMounted(fetchTicket)
         <button class="btn btn-primary mt-3" @click="back">Back</button>
       </div>
     </div>
+
+    <div class="mt-3">
+      <button class="btn btn-success me-2" @click="submitAndNext">Submit</button>
+      <button class="btn btn-primary" @click="back">Back</button>
+
   </div>
 
 </template>
