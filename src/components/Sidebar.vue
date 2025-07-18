@@ -16,7 +16,7 @@ function logout() {
 </script>
 
 <template>
-  <aside class="sidebar bg-dark text-white p-3 h-100">
+  <aside class="sidebar bg-dark text-white p-3">
     <h2 class="h5">On Street Parking</h2>
     <ul class="list-unstyled mt-3">
       <li class="title fw-bold mb-2">On Street Parking</li>
