@@ -12,7 +12,7 @@ export function login(username, password) {
 }
 
 export function getTickets(token) {
-  return api.get('/tickets/', {
+  return api.get('/tickets?status=waiting', {
     headers: { Authorization: `Bearer ${token}` },
   })
 }
@@ -26,6 +26,15 @@ export function getTicket(token, id) {
 export function submitTicket(token, id) {
   return api.post(
     `/submit/${id}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  )
+}
+export function cancelTicket(token, id) {
+  return api.post(
+    `/ticket/${id}/cancel`,
     {},
     {
       headers: { Authorization: `Bearer ${token}` },

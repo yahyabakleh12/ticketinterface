@@ -61,66 +61,68 @@ function viewTicket(id) {
   router.push(`/ticket/${id}`)
 }
 
-function editTicket(id) {
-  alert(`Edit ${id}`)
-}
+// function editTicket(id) {
+//   alert(`Edit ${id}`)
+// }
 
-function deleteTicket(id) {
-  alert(`Delete ${id}`)
-}
+// function deleteTicket(id) {
+//   alert(`Delete ${id}`)
+// }
 </script>
 
 <template>
-  <div class="dashboard">
-    <Sidebar />
-    <div class="main">
-      <NavBar :title="'Tickets'" :notifications="tickets.length">
-        <button class="btn primary" @click="addTicket">Add New Ticket</button>
-      </NavBar>
-      <div class="filters">
-        <input v-model="filters.dateRange" placeholder="Entry/Exit Range" />
-        <input v-model="filters.cameraId" placeholder="Camera ID" />
-        <input v-model="filters.plate" placeholder="Plate Number" />
-        <input v-model="filters.code" placeholder="Code" />
-        <input v-model="filters.emirate" placeholder="Emirate" />
-      </div>
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>Code</th>
-            <th>City</th>
-            <th>Camera ID</th>
+  <div class="container-fluid px-0">
+    <div class="dashboard px-0">
+      <Sidebar />
+      <div class="main">
+        <NavBar :title="'Tickets'" :notifications="tickets.length">
+          <button class="btn primary" @click="addTicket">Add New Ticket</button>
+        </NavBar>
+        <div class="filters">
+          <input v-model="filters.dateRange" placeholder="Entry/Exit Range" />
+          <input v-model="filters.cameraId" placeholder="Camera ID" />
+          <input v-model="filters.plate" placeholder="Plate Number" />
+          <input v-model="filters.code" placeholder="Code" />
+          <input v-model="filters.emirate" placeholder="Emirate" />
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Number</th>
+              <th>Code</th>
+              <th>City</th>
+              <th>Camera ID</th>
 
-            <th>Entry Time</th>
-            <th>Exit Time</th>
-            <th>Duration</th>
-            <th>Car Image</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="t in tickets" :key="t.id">
-            <td>{{ t.number }}</td>
-            <td>{{ t.code }}</td>
-            <td>{{ t.city }}</td>
-            <td>{{ t.cameraId }}</td>
+              <th>Entry Time</th>
+              <th>Exit Time</th>
+              <th>Duration</th>
+              <th>Car Image</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="t in tickets" :key="t.id">
+              <td>{{ t.number }}</td>
+              <td>{{ t.code }}</td>
+              <td>{{ t.city }}</td>
+              <td>{{ t.cameraId }}</td>
 
-            <td>{{ t.entryTime }}</td>
-            <td>{{ t.exitTime }}</td>
-            <td>{{ t.duration }}</td>
-            <td><img :src="`data:image/jpeg;base64,${t.image}`" alt="Car"
-                style="width:40px; height:24px; object-fit:cover; border-radius:4px;" /></td>
-            <td>{{ t.status }}</td>
-            <td>
-              <button class="btn view" @click="viewTicket(t.id)">View</button>
-              <!-- <button class="btn edit" @click="editTicket(t.id)">Edit</button>
+              <td>{{ t.entryTime }}</td>
+              <td>{{ t.exitTime }}</td>
+              <td>{{ t.duration }}</td>
+              <td><img :src="`http://10.11.5.103:18001/image-in/${t.id}`" alt="Car"
+                  style="width:40px; height:24px; object-fit:cover; border-radius:4px;" /></td>
+              <td>{{ t.status }}</td>
+              <td>
+                <button class="btn view" @click="viewTicket(t.id)">View</button>
+                <!-- <button class="btn edit" @click="editTicket(t.id)">Edit</button>
               <button class="btn delete" @click="deleteTicket(t.id)">Delete</button> -->
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>

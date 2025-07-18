@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getTicket, submitTicket } from '../api'
+import { cancelTicket, getTicket, submitTicket } from '../api'
 
 import NavBar from '../components/NavBar.vue'
 import Sidebar from '../components/Sidebar.vue'
@@ -29,6 +29,7 @@ async function fetchTicket() {
         exitPath: t.exit_video_path,
         exitVideo: t.exit_video_path,
         image: t.car_pic,
+        status: t.status,
       }
     }
   } catch (e) {
@@ -56,55 +57,106 @@ async function submitAndNext() {
       await submitTicket(token, ticket.value.id)
       const nextId = Number(route.params.id) + 1
       router.push(`/ticket/${nextId}`)
+      window.location.assign(`/ticket/${nextId}`)
     }
   } catch (e) {
     console.error('Failed to submit ticket', e)
   }
 }
 
+async function cancelAndNext() {
+  try {
+    const token = localStorage.getItem('token')
+    if (token && ticket.value) {
+      await cancelTicket(token, ticket.value.id)
+      const nextId = Number(route.params.id) + 1
+      router.push(`/ticket/${nextId}`)
+      window.location.assign(`/ticket/${nextId}`)
+    }
+  } catch (e) {
+    console.error('Failed to submit ticket', e)
+  }
+
+}
+async function Next() {
+  try {
+    const token = localStorage.getItem('token')
+    if (token && ticket.value) {
+      const nextId = Number(route.params.id) + 1
+      router.push(`/ticket/${nextId}`)
+      window.location.assign(`/ticket/${nextId}`)
+    }
+  } catch (e) {
+    console.error('Failed to submit ticket', e)
+  }
+}
+
+
 onMounted(fetchTicket)
 </script>
 
 <template>
-  <div class="dashboard" v-if="ticket">
-    <Sidebar />
-    <div class="main">
-      <NavBar title="Ticket Details" :notifications="1" />
-      <div class="card m-3 p-3">
-        <div class="row">
-          <div class="col-md-4 text-center">
-            <img :src="`data:image/jpeg;base64,${ticket.image}`" alt="car" class="img-fluid rounded mb-3"
-              style="height: 100%;" />
+  <div class="container-fluid px-0">
+    <div class="dashboard" v-if="ticket">
+      <Sidebar />
+      <div class="main">
+        <NavBar title="Ticket Details" :notifications="1" />
+        <div class="card m-3 p-3">
+          <div class="row">
+
+            <div class="d-grid gap-2 col-4 mx-auto p-3"> <button class="btn btn-danger me-2"
+                @click="cancelAndNext">cancel</button></div>
+            <div class="d-grid gap-2 col-4 mx-auto p-3"><button class="btn btn-success me-2 justify-contant-center"
+                @click="submitAndNext">Submit</button></div>
+            <div class="d-grid gap-2 col-4 mx-auto p-3"> <button class="btn btn-primary me-2"
+                @click="Next">Next</button>
+            </div>
+
           </div>
-          <div class="col-md-8 bg-dark text-white p-3">
-            <p><strong>Number:</strong> {{ ticket.number }}</p>
-            <p><strong>Code:</strong> {{ ticket.code }}</p>
-            <p><strong>City:</strong> {{ ticket.city }}</p>
-            <p><strong>Camera ID:</strong> {{ ticket.cameraId }}</p>
-            <p><strong>Entry Time:</strong> {{ ticket.entryTime }}</p>
-            <p><strong>Exit Time:</strong> {{ ticket.exitTime }}</p>
-            <p><strong>Duration:</strong> {{ ticket.duration }}</p>
+          <div class="row">
+            <div class="col-md-6  p-3">
+              <div class="mt-3">
+                <p>
+                  <strong>Entry File:</strong>
+                  <img :src="`http://10.11.5.103:18001/image-in/${ticket.id}`" alt="in image"
+                    class="img-fluid rounded" />
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6 p-3">
+              <div class="mt-3">
+                <p>
+                  <strong>Exit File:</strong>
+                  <video class="w-100 mt-2" controls v-if="ticket.exitVideo"
+                    :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`"></video>
+                </p>
+              </div>
+            </div>
           </div>
+          <div class="row">
+            <div class="col-md-4 text-center">
+              <img :src="`http://10.11.5.103:18001/image-car/${ticket.id}`" alt="car" class="img-fluid rounded mb-3"
+                style="height: 100%;" />
+            </div>
+            <div class="col-md-8 bg-dark text-white p-3">
+              <p><strong>Number:</strong> {{ ticket.number }}</p>
+              <p><strong>Code:</strong> {{ ticket.code }}</p>
+              <p><strong>City:</strong> {{ ticket.city }}</p>
+              <p><strong>Camera ID:</strong> {{ ticket.cameraId }}</p>
+              <p><strong>Entry Time:</strong> {{ ticket.entryTime }}</p>
+              <p><strong>Exit Time:</strong> {{ ticket.exitTime }}</p>
+              <p><strong>Duration:</strong> {{ ticket.duration }}</p>
+              <p><strong>Status:</strong> {{ ticket.status }}</p>
+            </div>
+          </div>
+
+
+          <button class="btn btn-primary mt-3" @click="back">Back</button>
         </div>
-        <div class="mt-3">
-          <p>
-            <strong>Entry File:</strong>
-            <img :src="`data:image/jpeg;base64,${ticket.entryPath}`" alt="car" class="img-fluid rounded" />
-          </p>
-          <p><strong>Exit File:</strong> {{ ticket.exitPath }}</p>
-          <video class="w-100 mt-2" controls v-if="ticket.exitVideo"
-            :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`"></video>
-        </div>
-        <button class="btn btn-primary mt-3" @click="back">Back</button>
       </div>
     </div>
 
-    <div class="mt-3">
-      <button class="btn btn-success me-2" @click="submitAndNext">Submit</button>
-      <button class="btn btn-primary" @click="back">Back</button>
-
   </div>
-
 </template>
 
 <style scoped>
