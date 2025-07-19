@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { cancelTicket, getTicket, submitTicket } from '../api'
+import { cancelTicket, getTicket, getTickets, submitTicket } from '../api'
 
 import NavBar from '../components/NavBar.vue'
 import Sidebar from '../components/Sidebar.vue'
@@ -50,14 +50,36 @@ function back() {
   router.push('/tickets')
 }
 
+async function goToNextTicket() {
+  try {
+    const token = localStorage.getItem('token')
+    if (token) {
+      const res = await getTickets(token)
+      const tickets = res.data
+      if (tickets.length === 0) {
+        router.push('/tickets')
+        window.location.assign('/tickets')
+        return
+      }
+
+      const currentId = Number(route.params.id)
+      const idx = tickets.findIndex((t) => t.id === currentId)
+      const nextIdx = idx === -1 || idx === tickets.length - 1 ? 0 : idx + 1
+      const nextId = tickets[nextIdx].id
+      router.push(`/ticket/${nextId}`)
+      window.location.assign(`/ticket/${nextId}`)
+    }
+  } catch (e) {
+    console.error('Failed to load next ticket', e)
+  }
+}
+
 async function submitAndNext() {
   try {
     const token = localStorage.getItem('token')
     if (token && ticket.value) {
       await submitTicket(token, ticket.value.id)
-      const nextId = Number(route.params.id) + 1
-      router.push(`/ticket/${nextId}`)
-      window.location.assign(`/ticket/${nextId}`)
+      await goToNextTicket()
     }
   } catch (e) {
     console.error('Failed to submit ticket', e)
@@ -69,22 +91,17 @@ async function cancelAndNext() {
     const token = localStorage.getItem('token')
     if (token && ticket.value) {
       await cancelTicket(token, ticket.value.id)
-      const nextId = Number(route.params.id) + 1
-      router.push(`/ticket/${nextId}`)
-      window.location.assign(`/ticket/${nextId}`)
+      await goToNextTicket()
     }
   } catch (e) {
     console.error('Failed to submit ticket', e)
   }
-
 }
 async function Next() {
   try {
     const token = localStorage.getItem('token')
     if (token && ticket.value) {
-      const nextId = Number(route.params.id) + 1
-      router.push(`/ticket/${nextId}`)
-      window.location.assign(`/ticket/${nextId}`)
+      await goToNextTicket()
     }
   } catch (e) {
     console.error('Failed to submit ticket', e)
