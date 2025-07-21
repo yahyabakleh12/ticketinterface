@@ -42,8 +42,8 @@ export function cancelTicket(token, id) {
   )
 }
 
-export function getNextTicket(token) {
-  return api.get('/ticket/next', {
+export function getNextTicket(token, id) {
+  return api.get(`/ticket/${id}/next`, {
     headers: { Authorization: `Bearer ${token}` },
   })
 }
