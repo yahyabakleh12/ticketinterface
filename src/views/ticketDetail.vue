@@ -53,8 +53,8 @@ function back() {
 async function goToNextTicket() {
   try {
     const token = localStorage.getItem('token')
-    if (token) {
-      const res = await getNextTicket(token)
+    if (token && ticket.value) {
+      const res = await getNextTicket(token, ticket.value.id)
       const next = res.data
       if (!next || !next.id) {
         router.push('/tickets')
