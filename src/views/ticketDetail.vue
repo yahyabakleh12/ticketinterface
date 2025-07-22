@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import videojs from 'video.js'
 import { useRoute, useRouter } from 'vue-router'
 import { cancelTicket, getTicket, getNextTicket, submitTicket } from '../api'
 
@@ -8,6 +9,8 @@ import Sidebar from '../components/Sidebar.vue'
 const route = useRoute()
 const router = useRouter()
 const ticket = ref(null)
+const videoElement = ref(null)
+let player
 
 async function fetchTicket() {
   try {
@@ -112,8 +115,36 @@ function getMimeType(fileName) {
   return ''
 }
 
+onMounted(async () => {
+  await fetchTicket()
+  if (videoElement.value) {
+    player = videojs(videoElement.value)
+    if (ticket.value && ticket.value.exitVideo) {
+      player.src({
+        src: `http://10.11.5.103:18001/videos/${ticket.value.exitVideo}`,
+        type: getMimeType(ticket.value.exitVideo),
+      })
+    }
+  }
+})
 
-onMounted(fetchTicket)
+watch(
+  () => ticket.value && ticket.value.exitVideo,
+  (newVal) => {
+    if (player && newVal) {
+      player.src({
+        src: `http://10.11.5.103:18001/videos/${newVal}`,
+        type: getMimeType(newVal),
+      })
+    }
+  },
+)
+
+onBeforeUnmount(() => {
+  if (player) {
+    player.dispose()
+  }
+})
 </script>
 
 <template>
@@ -148,9 +179,12 @@ onMounted(fetchTicket)
               <div class="mt-3">
                 <p>
                   <strong>Exit File:</strong>
-                  <video class="w-100 mt-2" controls v-if="ticket.exitVideo">
-                    <source :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`" :type="getMimeType(ticket.exitVideo)" />
-                  </video>
+                  <video
+                    ref="videoElement"
+                    class="video-js vjs-default-skin w-100 mt-2"
+                    controls
+                    v-if="ticket.exitVideo"
+                  />
                 </p>
               </div>
             </div>
