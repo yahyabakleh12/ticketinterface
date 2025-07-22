@@ -104,6 +104,14 @@ async function Next() {
   }
 }
 
+function getMimeType(fileName) {
+  if (!fileName) return ''
+  const ext = fileName.split('.').pop().toLowerCase()
+  if (ext === 'mp4' || ext === 'mp4v') return 'video/mp4'
+  if (ext === 'wav') return 'audio/wav'
+  return ''
+}
+
 
 onMounted(fetchTicket)
 </script>
@@ -140,8 +148,9 @@ onMounted(fetchTicket)
               <div class="mt-3">
                 <p>
                   <strong>Exit File:</strong>
-                  <video class="w-100 mt-2" controls v-if="ticket.exitVideo"
-                    :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`"></video>
+                  <video class="w-100 mt-2" controls v-if="ticket.exitVideo">
+                    <source :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`" :type="getMimeType(ticket.exitVideo)" />
+                  </video>
                 </p>
               </div>
             </div>
