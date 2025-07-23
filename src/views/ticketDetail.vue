@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
-import videojs from 'video.js'
 import { useRoute, useRouter } from 'vue-router'
 import { cancelTicket, getTicket, getNextTicket, submitTicket } from '../api'
 
@@ -11,7 +10,6 @@ const router = useRouter()
 const ticket = ref(null)
 const videoElement = ref(null)
 const entryImage = ref(null)
-let player
 
 function updateVideoHeight() {
   if (entryImage.value && videoElement.value) {
@@ -133,16 +131,6 @@ function getMimeType(fileName) {
 
 onMounted(async () => {
   await fetchTicket()
-  if (videoElement.value) {
-    player = videojs(videoElement.value)
-    if (ticket.value && ticket.value.exitVideo) {
-      player.src({
-        src: `http://10.11.5.103:18001/videos/${ticket.value.exitVideo}`,
-        type: getMimeType(ticket.value.exitVideo),
-      })
-    }
-    player.on('loadedmetadata', updateVideoHeight)
-  }
   await nextTick()
   updateVideoHeight()
   window.addEventListener('resize', updateVideoHeight)
@@ -150,14 +138,7 @@ onMounted(async () => {
 
 watch(
   () => ticket.value && ticket.value.exitVideo,
-  (newVal) => {
-    if (player && newVal) {
-      player.src({
-        src: `http://10.11.5.103:18001/videos/${newVal}`,
-        type: getMimeType(newVal),
-      })
-      player.one('loadedmetadata', updateVideoHeight)
-    }
+  () => {
     nextTick(updateVideoHeight)
   },
 )
@@ -167,10 +148,6 @@ watch(ticket, () => {
 })
 
 onBeforeUnmount(() => {
-  if (player) {
-    player.off('loadedmetadata', updateVideoHeight)
-    player.dispose()
-  }
   window.removeEventListener('resize', updateVideoHeight)
 })
 </script>
@@ -216,9 +193,11 @@ onBeforeUnmount(() => {
                   <strong>Exit File:</strong>
                   <video
                     ref="videoElement"
-                    class="video-js vjs-default-skin w-100 mt-2"
+                    class="w-100 mt-2"
                     controls
                     v-if="ticket.exitVideo"
+                    :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`"
+                    @loadedmetadata="updateVideoHeight"
                   />
                 </p>
               </div>
