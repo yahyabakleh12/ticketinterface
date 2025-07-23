@@ -15,9 +15,15 @@ let player
 
 function updateVideoHeight() {
   if (entryImage.value && videoElement.value) {
-    const h = entryImage.value.clientHeight
-    if (h) {
-      videoElement.value.style.height = `${h}px`
+    const imageHeight = entryImage.value.clientHeight
+    const videoHeight =
+      videoElement.value.videoHeight || videoElement.value.clientHeight
+    if (imageHeight && videoHeight) {
+      if (videoHeight > imageHeight) {
+        videoElement.value.style.height = `${imageHeight}px`
+      } else {
+        videoElement.value.style.height = ''
+      }
     }
   }
 }
@@ -135,6 +141,7 @@ onMounted(async () => {
         type: getMimeType(ticket.value.exitVideo),
       })
     }
+    player.on('loadedmetadata', updateVideoHeight)
   }
   await nextTick()
   updateVideoHeight()
@@ -149,6 +156,7 @@ watch(
         src: `http://10.11.5.103:18001/videos/${newVal}`,
         type: getMimeType(newVal),
       })
+      player.one('loadedmetadata', updateVideoHeight)
     }
     nextTick(updateVideoHeight)
   },
@@ -160,6 +168,7 @@ watch(ticket, () => {
 
 onBeforeUnmount(() => {
   if (player) {
+    player.off('loadedmetadata', updateVideoHeight)
     player.dispose()
   }
   window.removeEventListener('resize', updateVideoHeight)
