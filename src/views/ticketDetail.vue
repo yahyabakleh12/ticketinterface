@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import videojs from 'video.js'
 import { useRoute, useRouter } from 'vue-router'
 import { cancelTicket, getTicket, getNextTicket, submitTicket } from '../api'
@@ -10,7 +10,17 @@ const route = useRoute()
 const router = useRouter()
 const ticket = ref(null)
 const videoElement = ref(null)
+const entryImage = ref(null)
 let player
+
+function updateVideoHeight() {
+  if (entryImage.value && videoElement.value) {
+    const h = entryImage.value.clientHeight
+    if (h) {
+      videoElement.value.style.height = `${h}px`
+    }
+  }
+}
 
 async function fetchTicket() {
   try {
@@ -126,6 +136,9 @@ onMounted(async () => {
       })
     }
   }
+  await nextTick()
+  updateVideoHeight()
+  window.addEventListener('resize', updateVideoHeight)
 })
 
 watch(
@@ -137,13 +150,19 @@ watch(
         type: getMimeType(newVal),
       })
     }
+    nextTick(updateVideoHeight)
   },
 )
+
+watch(ticket, () => {
+  nextTick(updateVideoHeight)
+})
 
 onBeforeUnmount(() => {
   if (player) {
     player.dispose()
   }
+  window.removeEventListener('resize', updateVideoHeight)
 })
 </script>
 
@@ -155,23 +174,30 @@ onBeforeUnmount(() => {
         <NavBar title="Ticket Details" :notifications="1" />
         <div class="card m-3 p-3">
           <div class="row">
-
-            <div class="d-grid gap-2 col-4 mx-auto p-3"> <button class="btn btn-danger me-2"
-                @click="cancelAndNext">cancel</button></div>
-            <div class="d-grid gap-2 col-4 mx-auto p-3"><button class="btn btn-success me-2 justify-contant-center"
-                @click="submitAndNext">Submit</button></div>
-            <div class="d-grid gap-2 col-4 mx-auto p-3"> <button class="btn btn-primary me-2"
-                @click="Next">Next</button>
+            <div class="d-grid gap-2 col-4 mx-auto p-3">
+              <button class="btn btn-danger me-2" @click="cancelAndNext">cancel</button>
             </div>
-
+            <div class="d-grid gap-2 col-4 mx-auto p-3">
+              <button class="btn btn-success me-2 justify-contant-center" @click="submitAndNext">
+                Submit
+              </button>
+            </div>
+            <div class="d-grid gap-2 col-4 mx-auto p-3">
+              <button class="btn btn-primary me-2" @click="Next">Next</button>
+            </div>
           </div>
           <div class="row">
-            <div class="col-md-6  p-3">
+            <div class="col-md-6 p-3">
               <div class="mt-3">
                 <p>
                   <strong>Entry File:</strong>
-                  <img :src="`http://10.11.5.103:18001/image-in/${ticket.id}`" alt="in image"
-                    class="img-fluid rounded" />
+                  <img
+                    ref="entryImage"
+                    :src="`http://10.11.5.103:18001/image-in/${ticket.id}`"
+                    alt="in image"
+                    class="img-fluid rounded"
+                    @load="updateVideoHeight"
+                  />
                 </p>
               </div>
             </div>
@@ -191,8 +217,12 @@ onBeforeUnmount(() => {
           </div>
           <div class="row">
             <div class="col-md-4 text-center">
-              <img :src="`http://10.11.5.103:18001/image-car/${ticket.id}`" alt="car" class="img-fluid rounded mb-3"
-                style="height: 100%;" />
+              <img
+                :src="`http://10.11.5.103:18001/image-car/${ticket.id}`"
+                alt="car"
+                class="img-fluid rounded mb-3"
+                style="height: 100%"
+              />
             </div>
             <div class="col-md-8 bg-dark text-white p-3">
               <p><strong>Number:</strong> {{ ticket.number }}</p>
@@ -206,12 +236,10 @@ onBeforeUnmount(() => {
             </div>
           </div>
 
-
           <button class="btn btn-primary mt-3" @click="back">Back</button>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
