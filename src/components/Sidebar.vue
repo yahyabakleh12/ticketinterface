@@ -9,6 +9,14 @@ function goTickets() {
   router.push('/tickets')
 }
 
+function goSubmittedTickets() {
+  router.push('/submittedtickets')
+}
+
+function goCancelledTickets() {
+  router.push('/cancelledtickets')
+}
+
 function logout() {
   localStorage.removeItem('token')
   router.push('/')
@@ -26,6 +34,20 @@ function logout() {
         @click="goTickets"
       >
         Tickets
+      </li>
+      <li
+        class="mb-1 px-2 py-1 rounded"
+        :class="{ 'bg-secondary': route.path === '/submittedtickets' }"
+        @click="goSubmittedTickets"
+      >
+        Submitted
+      </li>
+      <li
+        class="mb-1 px-2 py-1 rounded"
+        :class="{ 'bg-secondary': route.path === '/cancelledtickets' }"
+        @click="goCancelledTickets"
+      >
+        Cancelled
       </li>
       <li class="logout mt-3" @click="logout">Logout</li>
     </ul>

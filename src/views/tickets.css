@@ -124,6 +124,12 @@
 .delete {
   background: #dc3545;
 }
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+}
 @media (max-width: 768px) {
   .dashboard {
     flex-direction: column;
