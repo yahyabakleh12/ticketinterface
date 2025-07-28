@@ -11,8 +11,13 @@ export function login(username, password) {
   return api.post('/login', params)
 }
 
-export function getTickets(token) {
-  return api.get('/tickets?status=waiting', {
+export function getTickets(token, page = 1, pageSize = 50) {
+  const params = new URLSearchParams({
+    status: 'waiting',
+    page: String(page),
+    page_size: String(pageSize),
+  })
+  return api.get(`/tickets?${params.toString()}`, {
     headers: { Authorization: `Bearer ${token}` },
   })
 }
@@ -44,6 +49,26 @@ export function cancelTicket(token, id) {
 
 export function getNextTicket(token, id) {
   return api.get(`/ticket/${id}/next`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+}
+
+export function getSubmittedTickets(token, page = 1, pageSize = 50) {
+  const params = new URLSearchParams({
+    page: String(page),
+    page_size: String(pageSize),
+  })
+  return api.get(`/submittedtickets/?${params.toString()}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+}
+
+export function getCancelledTickets(token, page = 1, pageSize = 50) {
+  const params = new URLSearchParams({
+    page: String(page),
+    page_size: String(pageSize),
+  })
+  return api.get(`/cancelledtickets/?${params.toString()}`, {
     headers: { Authorization: `Bearer ${token}` },
   })
 }

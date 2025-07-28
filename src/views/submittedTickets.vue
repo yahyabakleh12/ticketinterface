@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { getTickets } from '../api'
+import { getSubmittedTickets } from '../api'
 import Sidebar from '../components/Sidebar.vue'
 import NavBar from '../components/NavBar.vue'
 
@@ -15,7 +15,7 @@ async function fetchTickets(page = currentPage.value) {
   try {
     const token = localStorage.getItem('token')
     if (token) {
-      const res = await getTickets(token, page, pageSize)
+      const res = await getSubmittedTickets(token, page, pageSize)
       tickets.value = res.data.map((t) => ({
         id: t.id,
         token: t.token,
@@ -92,7 +92,7 @@ function viewTicket(id) {
     <div class="dashboard px-0">
       <Sidebar />
       <div class="main">
-        <NavBar :title="'Tickets'" :notifications="tickets.length">
+        <NavBar :title="'Submitted Tickets'" :notifications="tickets.length">
           <button class="btn primary" @click="addTicket">Add New Ticket</button>
         </NavBar>
         <div class="filters">
