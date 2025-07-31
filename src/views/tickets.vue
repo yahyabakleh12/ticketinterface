@@ -113,7 +113,7 @@ function viewTicket(id) {
               <th>Entry Time</th>
               <th>Exit Time</th>
               <th>Duration</th>
-              <th>Car Image</th>
+
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -128,8 +128,6 @@ function viewTicket(id) {
               <td>{{ t.entryTime }}</td>
               <td>{{ t.exitTime }}</td>
               <td>{{ t.duration }}</td>
-              <td><img :src="`http://10.11.5.103:18001/image-in/${t.id}`" alt="Car"
-                  style="width:40px; height:24px; object-fit:cover; border-radius:4px;" /></td>
               <td>{{ t.status }}</td>
               <td>
                 <button class="btn view" @click="viewTicket(t.id)">View</button>
