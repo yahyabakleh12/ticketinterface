@@ -160,6 +160,11 @@ onBeforeUnmount(() => {
         <NavBar title="Ticket Details" :notifications="1" />
         <div class="card m-3 p-3">
           <div class="row">
+            <div class="col-12">
+              <h5 class="text-center bg-danger text-white p-3">{{ ticket.duration }}</h5>
+            </div>
+          </div>
+          <div class="row">
             <div class="d-grid gap-2 col-4 mx-auto p-3">
               <button class="btn btn-danger me-2" @click="cancelAndNext">cancel</button>
             </div>
@@ -177,13 +182,8 @@ onBeforeUnmount(() => {
               <div class="mt-3">
                 <p>
                   <strong>Entry File:</strong>
-                  <img
-                    ref="entryImage"
-                    :src="`http://10.11.5.103:18001/image-in/${ticket.id}`"
-                    alt="in image"
-                    class="img-fluid rounded"
-                    @load="updateVideoHeight"
-                  />
+                  <img ref="entryImage" :src="`http://10.11.5.103:18001/image-in/${ticket.id}`" alt="in image"
+                    class="img-fluid rounded" @load="updateVideoHeight" />
                 </p>
               </div>
             </div>
@@ -191,26 +191,16 @@ onBeforeUnmount(() => {
               <div class="mt-3">
                 <p>
                   <strong>Exit File:</strong>
-                  <video
-                    ref="videoElement"
-                    class="w-100 mt-2"
-                    controls
-                    v-if="ticket.exitVideo"
-                    :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`"
-                    @loadedmetadata="updateVideoHeight"
-                  />
+                  <video ref="videoElement" class="w-100 mt-2" controls v-if="ticket.exitVideo"
+                    :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`" @loadedmetadata="updateVideoHeight" />
                 </p>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-4 text-center">
-              <img
-                :src="`http://10.11.5.103:18001/image-car/${ticket.id}`"
-                alt="car"
-                class="img-fluid rounded mb-3"
-                style="height: 100%"
-              />
+              <img :src="`http://10.11.5.103:18001/image-car/${ticket.id}`" alt="car" class="img-fluid rounded mb-3"
+                style="height: 100%" />
             </div>
             <div class="col-md-8 bg-dark text-white p-3">
               <p><strong>Number:</strong> {{ ticket.number }}</p>
