@@ -43,8 +43,8 @@ async function fetchTicket() {
         exitTime: t.exit_time,
         duration: formatDuration(t.entry_time, t.exit_time),
         entryPath: t.entry_pic_base64,
-        exitPath: t.exit_video_path,
-        exitVideo: t.exit_video_path,
+        exitFile: t.exit_video_path,
+        isExitVideo: /\.(mp4|mp4v|mov|avi|webm)$/i.test(t.exit_video_path),
         image: t.car_pic,
         status: t.status,
       }
@@ -121,14 +121,6 @@ async function Next() {
   }
 }
 
-function getMimeType(fileName) {
-  if (!fileName) return ''
-  const ext = fileName.split('.').pop().toLowerCase()
-  if (ext === 'mp4' || ext === 'mp4v') return 'video/mp4'
-  if (ext === 'wav') return 'audio/wav'
-  return ''
-}
-
 onMounted(async () => {
   await fetchTicket()
   await nextTick()
@@ -137,7 +129,7 @@ onMounted(async () => {
 })
 
 watch(
-  () => ticket.value && ticket.value.exitVideo,
+  () => ticket.value && ticket.value.exitFile,
   () => {
     nextTick(updateVideoHeight)
   },
@@ -191,8 +183,11 @@ onBeforeUnmount(() => {
               <div class="mt-3">
                 <p>
                   <strong>Exit File:</strong>
-                  <video ref="videoElement" class="w-100 mt-2" controls v-if="ticket.exitVideo"
-                    :src="`http://10.11.5.103:18001/videos/${ticket.exitVideo}`" @loadedmetadata="updateVideoHeight" />
+                  <video ref="videoElement" class="w-100 mt-2" controls v-if="ticket.isExitVideo"
+                    :src="`http://10.11.5.103:18001/videos/${ticket.exitFile}`"
+                    @loadedmetadata="updateVideoHeight" />
+                  <img v-else :src="`http://10.11.5.103:18001/videos/${ticket.exitFile}`" alt="out image"
+                    class="img-fluid rounded mt-2" @load="updateVideoHeight" />
                 </p>
               </div>
             </div>
